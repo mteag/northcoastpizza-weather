@@ -20,6 +20,7 @@ fetch('https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&
       'Dease Lake',
       'Fort Nelson',
       'Terrace',
+      'Prince George',
       'Whistler',
       'Revelstoke',
       'Creston'
