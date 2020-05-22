@@ -15,7 +15,6 @@ fetch('https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&
 }).then(function(response) {
   return response.json();
 }).then(function(json) {
-  console.log(json);
   json.features = json.features.filter((feature) => {
     const featureName = feature.properties.name;
     return [
@@ -28,7 +27,6 @@ fetch('https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&
       'Creston'
     ].find((name) => name.toUpperCase() == featureName.toUpperCase());
   })
-  console.log(json.features);
   var layer = L.geoJSON(json, {
     pointToLayer: function (feature, latlng) {
       return createMarker(feature, latlng);
