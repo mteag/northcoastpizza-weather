@@ -1,0 +1,32 @@
+
+html {
+    font-family: sans-serif;
+}
+
+header {
+    background-color: maroon;
+    color: white;
+    position: absolute;
+    top: 0;
+    box-sizing: content-box;
+    height: 90px;
+    width: 100%;
+    z-index: 2000;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);
+}
+
+.header-title {
+    padding: 10px;
+}
+
+.header-title h1, .header-title h2 {
+    margin: 0;
+}
+
+.content {
+    position: absolute;
+    top: 90px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}

@@ -1,4 +1,5 @@
 
+import './global-styles.css';
 import './weather-forecast.css';
 
 import {createMarker} from './weather-marker.js'
