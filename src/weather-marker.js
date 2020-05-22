@@ -1,4 +1,6 @@
 
+import {showForecast} from './weather-forecast.js';
+
 import templateString from './weather-marker.template.html';
 import './weather-marker.css';
 
@@ -45,5 +47,5 @@ export function createMarker(feature, latlng) {
         iconAnchor: [40, 90]
       })
     }
-  );
+  ).on('click', () => showForecast(feature.properties));
 }

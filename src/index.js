@@ -1,4 +1,6 @@
 
+import './weather-forecast.css';
+
 import {createMarker} from './weather-marker.js'
 
 var map = L.map('map');
