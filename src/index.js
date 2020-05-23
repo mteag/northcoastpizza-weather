@@ -25,7 +25,7 @@ function addWeatherGeoJsonToMap(json) {
     ];
 
     for (var i = 0; i < cities.length; i++) {
-      if (cities[i].name.toUpperCase() === featureName.toUpperCase()) {
+      if (cities[i].toUpperCase() === featureName.toUpperCase()) {
         return true;
       }
     }
