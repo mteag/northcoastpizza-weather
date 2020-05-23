@@ -3,6 +3,7 @@ import './global-styles.css';
 import './weather-forecast.css';
 
 import {createMarker} from './weather-marker.js'
+import {jsonParseAsPromise, objectToParamString} from './utils.js';
 
 var CITIES = [
   'Dease Lake',
@@ -26,29 +27,6 @@ function shouldShowCity(feature) {
     }
 
     return false;
-}
-
-function jsonParseAsPromise(jsonText) {
-  try {
-    return Promise.resolve(JSON.parse(jsonText));
-  } catch (e) {
-    return Promise.reject(e);
-  }
-}
-
-function objectToParamString(params) {
-  var result = '';
-  for (var key in params) {
-    if (result === '') {
-      result += '?';
-    } else {
-      result += '&';
-    }
-
-    result += encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
-  }
-
-  return result;
 }
 
 function getWeatherGeoJson() {
@@ -75,12 +53,9 @@ function getWeatherGeoJson() {
 }
 
 function addWeatherGeoJsonToMap(map, json) {
-  json.features = json.features.filter(shouldShowCity);
-
   var layer = L.geoJSON(json, {
-    pointToLayer: function (feature, latlng) {
-      return createMarker(feature, latlng);
-    },
+    filter: shouldShowCity,
+    pointToLayer: createMarker,
     attribution: 'Data Source: ' +
       '<a href="https://www.canada.ca/en/environment-climate-change/services/weather-general-tools-resources/weather-tools-specialized-data/geospatial-web-services.html" ' +
       '   target="_blank"> ' +
