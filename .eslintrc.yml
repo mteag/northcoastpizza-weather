@@ -1,0 +1,15 @@
+env:
+  browser: true
+globals:
+  L: readonly
+extends:
+  - 'eslint:recommended'
+  - 'plugin:es5/no-es2015'
+parserOptions:
+  ecmaVersion: 2018
+  sourceType: module
+plugins:
+  - 'es5'
+rules:
+  eqeqeq: ['error', 'always', {'null': 'ignore'}]
+  es5/no-arrow-functions: error
