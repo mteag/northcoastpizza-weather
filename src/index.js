@@ -13,20 +13,14 @@ var CITIES = [
   'Whistler',
   'Revelstoke',
   'Creston'
-];
+].map(function (name) { return name.toUpperCase(); });
 
 var map;
 
 function shouldShowCity(feature) {
-    var featureName = feature.properties.name;
+  var featureName = feature.properties.name.toUpperCase();
 
-    for (var i = 0; i < CITIES.length; i++) {
-      if (CITIES[i].toUpperCase() === featureName.toUpperCase()) {
-        return true;
-      }
-    }
-
-    return false;
+  return CITIES.indexOf(featureName) >= 0;
 }
 
 function getWeatherGeoJson() {
