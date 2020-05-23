@@ -36,6 +36,21 @@ function jsonParseAsPromise(jsonText) {
   }
 }
 
+function objectToParamString(params) {
+  var result = '';
+  for (var key in params) {
+    if (result === '') {
+      result += '?';
+    } else {
+      result += '&';
+    }
+
+    result += encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+  }
+
+  return result;
+}
+
 function getWeatherGeoJson() {
   return new Promise(function (resolve, reject) {
     var geoJsonRequest = new XMLHttpRequest();
@@ -44,10 +59,17 @@ function getWeatherGeoJson() {
       resolve(jsonParseAsPromise(this.responseText));
     });
 
-    geoJsonRequest.open(
-      'GET',
-      'https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&SERVICE=WFS&VERSION=2.0.0&TYPENAME=ec-msc:CURRENT_CONDITIONS&outputFormat=GEOJSON&srsName=EPSG%3A3857'
-    );
+    var url = 'https://geo.weather.gc.ca/geomet/' + objectToParamString({
+      'service': 'WFS',
+      'REQUEST': 'GetFeature',
+      'SERVICE': 'WFS',
+      'VERSION': '2.0.0',
+      'TYPENAME': 'ec-msc:CURRENT_CONDITIONS',
+      'outputFormat': 'GEOJSON',
+      'srsName': 'EPSG:3857'
+    });
+
+    geoJsonRequest.open('GET', url);
     geoJsonRequest.send();
   });
 }
