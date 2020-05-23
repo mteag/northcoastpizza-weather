@@ -5,6 +5,12 @@ function showForecastWrapper() {
   wrapper.className = 'open';
 }
 
+function hideForecastWrapper() {
+  var wrapper = document.getElementById('weather-forecast-wrapper');
+
+  wrapper.className = '';
+}
+
 
 // https://weather.gc.ca/city/pages/bc-86_metric_e.html
 function forecastUrl(properties) {
@@ -18,11 +24,7 @@ function forecastUrl(properties) {
 }
 
 export function showForecast(properties) {
-  document.getElementById('weather-forecast-close').onclick = function () {
-    var wrapper = document.getElementById('weather-forecast-wrapper');
-
-    wrapper.className = '';
-  };
+  document.getElementById('weather-forecast-close').onclick = hideForecastWrapper;
 
   var url = forecastUrl(properties);
 
@@ -34,7 +36,5 @@ export function showForecast(properties) {
 
   iframe.src = url;
 
-  iframe.onload = function () {
-    showForecastWrapper();
-  };
+  iframe.onload = showForecastWrapper;
 }
