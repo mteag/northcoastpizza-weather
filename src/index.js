@@ -4,34 +4,53 @@ import './weather-forecast.css';
 
 import {createMarker} from './weather-marker.js'
 
-var map = L.map('map');
+var CITIES = [
+  'Dease Lake',
+  'Fort Nelson',
+  'Terrace',
+  'Prince George',
+  'Whistler',
+  'Revelstoke',
+  'Creston'
+];
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>'
-}).addTo(map);
+var map;
 
-function addWeatherGeoJsonToMap(json) {
-  json.features = json.features.filter(function (feature) {
+function shouldShowCity(feature) {
     var featureName = feature.properties.name;
-    var cities = [
-      'Dease Lake',
-      'Fort Nelson',
-      'Terrace',
-      'Prince George',
-      'Whistler',
-      'Revelstoke',
-      'Creston'
-    ];
 
-    for (var i = 0; i < cities.length; i++) {
-      if (cities[i].toUpperCase() === featureName.toUpperCase()) {
+    for (var i = 0; i < CITIES.length; i++) {
+      if (CITIES[i].toUpperCase() === featureName.toUpperCase()) {
         return true;
       }
     }
 
     return false;
-  })
+}
+
+function getWeatherGeoJson() {
+  return new Promise(function (resolve, reject) {
+    var geoJsonRequest = new XMLHttpRequest();
+
+    geoJsonRequest.addEventListener('load', function () {
+      var json;
+      try {
+        json = JSON.parse(this.responseText);
+      } catch (e) {
+        reject(e);
+      }
+
+      resolve(json);
+    });
+
+    geoJsonRequest.open('GET', 'https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&SERVICE=WFS&VERSION=2.0.0&TYPENAME=ec-msc:CURRENT_CONDITIONS&outputFormat=GEOJSON&srsName=EPSG%3A3857');
+    geoJsonRequest.send();
+  });
+}
+
+function addWeatherGeoJsonToMap(map, json) {
+  json.features = json.features.filter(shouldShowCity);
+
   var layer = L.geoJSON(json, {
     pointToLayer: function (feature, latlng) {
       return createMarker(feature, latlng);
@@ -42,9 +61,18 @@ function addWeatherGeoJsonToMap(json) {
   map.fitBounds(layer.getBounds());
 }
 
-var geoJsonRequest = new XMLHttpRequest();
-geoJsonRequest.addEventListener('load', function () {
-  addWeatherGeoJsonToMap(JSON.parse(this.responseText));
-});
-geoJsonRequest.open('GET', 'https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&SERVICE=WFS&VERSION=2.0.0&TYPENAME=ec-msc:CURRENT_CONDITIONS&outputFormat=GEOJSON&srsName=EPSG%3A3857');
-geoJsonRequest.send();
+function setupMap() {
+  map = L.map('map');
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>'
+  }).addTo(map);
+
+  return getWeatherGeoJson()
+    .then(function (json) {
+      addWeatherGeoJsonToMap(map, json);
+    });
+}
+
+setupMap();
