@@ -11,14 +11,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>'
 }).addTo(map);
 
-fetch('https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&SERVICE=WFS&VERSION=2.0.0&TYPENAME=ec-msc:CURRENT_CONDITIONS&outputFormat=GEOJSON&srsName=EPSG%3A3857', {
-  method: 'GET'
-}).then(function(response) {
-  return response.json();
-}).then(function(json) {
-  json.features = json.features.filter((feature) => {
-    const featureName = feature.properties.name;
-    return [
+function addWeatherGeoJsonToMap(json) {
+  json.features = json.features.filter(function (feature) {
+    var featureName = feature.properties.name;
+    var cities = [
       'Dease Lake',
       'Fort Nelson',
       'Terrace',
@@ -26,7 +22,15 @@ fetch('https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&
       'Whistler',
       'Revelstoke',
       'Creston'
-    ].find((name) => name.toUpperCase() == featureName.toUpperCase());
+    ];
+
+    for (var i = 0; i < cities.length; i++) {
+      if (cities[i].name.toUpperCase() === featureName.toUpperCase()) {
+        return true;
+      }
+    }
+
+    return false;
   })
   var layer = L.geoJSON(json, {
     pointToLayer: function (feature, latlng) {
@@ -36,4 +40,11 @@ fetch('https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&
   }).addTo(map);
 
   map.fitBounds(layer.getBounds());
+}
+
+var geoJsonRequest = new XMLHttpRequest();
+geoJsonRequest.addEventListener('load', function () {
+  addWeatherGeoJsonToMap(JSON.parse(this.responseText));
 });
+geoJsonRequest.open('GET', 'https://geo.weather.gc.ca/geomet/?lang=en&service=WFS&REQUEST=GetFeature&SERVICE=WFS&VERSION=2.0.0&TYPENAME=ec-msc:CURRENT_CONDITIONS&outputFormat=GEOJSON&srsName=EPSG%3A3857');
+geoJsonRequest.send();

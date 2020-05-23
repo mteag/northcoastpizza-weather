@@ -17,8 +17,6 @@ function forecastUrl(properties) {
   return 'https://weather.gc.ca/wxlink/wxlink.html?cityCode=' + match[0];
 }
 
-var currentOnLoadHandler = null;
-
 export function showForecast(properties) {
   document.getElementById('weather-forecast-close').onclick = function () {
     var wrapper = document.getElementById('weather-forecast-wrapper');

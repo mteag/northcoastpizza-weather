@@ -5,25 +5,25 @@ import templateString from './weather-marker.template.html';
 import './weather-marker.css';
 
 function domTemplateFromString(htmlString) {
-  const domTemplate = document.createElement('div');
+  var domTemplate = document.createElement('div');
   domTemplate.innerHTML = htmlString;
 
   return domTemplate.firstChild;
 }
 
-const template = domTemplateFromString(templateString);
+var TEMPLATE = domTemplateFromString(templateString);
 
 
 function createMarkerElement(properties) {
-  const markerElement = template.cloneNode(true);
+  var markerElement = TEMPLATE.cloneNode(true);
 
-  const iconElement = markerElement.getElementsByClassName(
+  var iconElement = markerElement.getElementsByClassName(
     'weather-marker-icon'
   )[0];
-  const temperatureElement = markerElement.getElementsByClassName(
+  var temperatureElement = markerElement.getElementsByClassName(
     'weather-marker-temperature-text'
   )[0];
-  const nameElement = markerElement.getElementsByClassName(
+  var nameElement = markerElement.getElementsByClassName(
     'weather-marker-location'
   )[0];
 
@@ -47,5 +47,7 @@ export function createMarker(feature, latlng) {
         iconAnchor: [40, 90]
       })
     }
-  ).on('click', () => showForecast(feature.properties));
+  ).on('click', function () {
+    showForecast(feature.properties)
+  });
 }

@@ -10,6 +10,7 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "css-loader": "^3.5.3",
+    "eslint": "^7.0.0",
     "html-loader": "^1.1.0",
     "mini-css-extract-plugin": "^0.9.0",
     "style-loader": "^1.2.1",
@@ -18,6 +19,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "eslint-plugin-es5": "^1.5.0",
     "leaflet": "^1.6.0"
   }
 }
