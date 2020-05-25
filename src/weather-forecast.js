@@ -1,4 +1,6 @@
 
+import './weather-forecast.css';
+
 function showForecastWrapper() {
   var wrapper = document.getElementById('weather-forecast-wrapper');
 

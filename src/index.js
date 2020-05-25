@@ -6,7 +6,6 @@
 import 'es6-promise/auto';
 
 import './global-styles.css';
-import './weather-forecast.css';
 
 import {createMarker} from './weather-marker.js'
 import {jsonParseAsPromise, objectToParamString} from './utils.js';
