@@ -1,4 +1,10 @@
 
+/*
+ * Importing a Promise polyfill to support Internet Explorer just in
+ * case.
+ */
+import 'es6-promise/auto';
+
 import './global-styles.css';
 import './weather-forecast.css';
 
