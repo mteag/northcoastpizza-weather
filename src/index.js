@@ -41,7 +41,7 @@ function getWeatherGeoJson() {
       'filter': '<Filter><Or>' +
         CITIES.map(function (cityName) {
           return '<ResourceId rid="CURRENT_CONDITIONS.' + cityName + '" />';
-        }) +
+        }).join('') +
         '</Or></Filter>'
     });
 
