@@ -18,15 +18,9 @@ var CITIES = [
   'Whistler',
   'Revelstoke',
   'Creston'
-].map(function (name) { return name.toUpperCase(); });
+];
 
 var map;
-
-function shouldShowCity(feature) {
-  var featureName = feature.properties.name.toUpperCase();
-
-  return CITIES.indexOf(featureName) >= 0;
-}
 
 function getWeatherGeoJson() {
   return new Promise(function (resolve, reject) {
@@ -43,7 +37,12 @@ function getWeatherGeoJson() {
       'VERSION': '2.0.0',
       'TYPENAME': 'ec-msc:CURRENT_CONDITIONS',
       'outputFormat': 'GEOJSON',
-      'srsName': 'EPSG:3857'
+      'srsName': 'EPSG:3857',
+      'filter': '<Filter><Or>' +
+        CITIES.map(function (cityName) {
+          return '<ResourceId rid="CURRENT_CONDITIONS.' + cityName + '" />';
+        }) +
+        '</Or></Filter>'
     });
 
     geoJsonRequest.open('GET', url);
@@ -53,7 +52,6 @@ function getWeatherGeoJson() {
 
 function addWeatherGeoJsonToMap(map, json) {
   var layer = L.geoJSON(json, {
-    filter: shouldShowCity,
     pointToLayer: createMarker,
     attribution: 'Data Source: ' +
       '<a href="https://www.canada.ca/en/environment-climate-change/services/weather-general-tools-resources/weather-tools-specialized-data/geospatial-web-services.html" ' +
