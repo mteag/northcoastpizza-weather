@@ -28,6 +28,7 @@ function createMarkerElement(properties) {
   )[0];
 
   iconElement.src = properties.icon;
+  iconElement.alt = properties.cond_en;
   temperatureElement.innerText = properties.temp;
   nameElement.innerText = properties.name;
 
