@@ -29,7 +29,7 @@ function createMarkerElement(properties) {
 
   iconElement.src = properties.icon;
   iconElement.alt = properties.cond_en;
-  temperatureElement.innerText = properties.temp;
+  temperatureElement.innerText = properties.temp + '°';
   nameElement.innerText = properties.name;
 
   return markerElement;
