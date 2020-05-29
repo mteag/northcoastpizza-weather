@@ -27,6 +27,7 @@ function createMarkerElement(properties) {
     'weather-marker-location'
   )[0];
 
+  markerElement.setAttribute('aria-label', properties.name + ' weather');
   iconElement.src = properties.icon;
   iconElement.alt = properties.cond_en;
   temperatureElement.innerText = properties.temp + '°';
