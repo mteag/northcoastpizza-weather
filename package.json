@@ -4,6 +4,8 @@
   "description": "A mini-app to display weather on a map",
   "private": true,
   "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --open",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
