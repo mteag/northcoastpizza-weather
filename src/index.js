@@ -8,7 +8,7 @@ import 'es6-promise/auto';
 import './global-styles.css';
 
 import {createMarker} from './weather-marker.js'
-import {jsonParseAsPromise, objectToParamString} from './utils.js';
+import {weatherXmlToGeoJson, objectToParamString} from './utils.js';
 
 var CITIES = [
   'Dease Lake',
@@ -27,7 +27,10 @@ function getWeatherGeoJson() {
     var geoJsonRequest = new XMLHttpRequest();
 
     geoJsonRequest.addEventListener('load', function () {
-      resolve(jsonParseAsPromise(this.responseText));
+      var that = this;
+      resolve(Promise.resolve().then(function () {
+	return weatherXmlToGeoJson(that.responseXML);
+      }));
     });
 
     var url = 'https://geo.weather.gc.ca/geomet/' + objectToParamString({
@@ -36,7 +39,6 @@ function getWeatherGeoJson() {
       'SERVICE': 'WFS',
       'VERSION': '2.0.0',
       'TYPENAME': 'ec-msc:CURRENT_CONDITIONS',
-      'outputFormat': 'GEOJSON',
       'srsName': 'EPSG:3857',
       'filter': '<Filter><Or>' +
         CITIES.map(function (cityName) {
