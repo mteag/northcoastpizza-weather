@@ -69,9 +69,11 @@ function addWeatherGeoJsonToMap(map, json) {
 }
 
 function setupMap() {
-  map = L.map('map', {
-    zoomSnap: 0
-  });
+  map = L
+    .map('map', {
+      zoomSnap: 0
+    })
+    .setView([55, -125], 5.5);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
