@@ -64,8 +64,7 @@ function addWeatherGeoJsonToMap(map, json) {
 
   map.fitBounds(layer.getBounds(), {
     paddingTopLeft: [50, 100],
-    paddingBottomRight: [50, 20],
-    duration: 1.0,
+    paddingBottomRight: [50, 20]
   });
 }
 
